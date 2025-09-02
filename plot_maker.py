@@ -11,13 +11,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns  
 import os
 
-# Check available styles if you're curious
-#print("Available styles:", plt.style.available)
+plt.style.use('ggplot') 
 
-# Use a modern, publication-appropriate style
-plt.style.use('ggplot')  # or try 'seaborn-v0_8-paper' for older seaborn versions
-
-# For additional customization, you can set the seaborn context
 sns.set_context("paper")
 sns.set_style("whitegrid")
 
@@ -25,7 +20,6 @@ sns.set_style("whitegrid")
 npy_files_1 = [f for f in os.listdir('./1_step') if f.endswith('.npy')]
 data_1 = {}
 for file in npy_files_1:
-    # Need to include the full path when loading
     data_1[file] = np.load(os.path.join('./1_step', file))
 print("Loaded files from 1_step:", list(data_1.keys()))
 
@@ -33,14 +27,10 @@ print("Loaded files from 1_step:", list(data_1.keys()))
 npy_files_12 = [f for f in os.listdir('./12_step') if f.endswith('.npy')]
 data_12 = {}
 for file in npy_files_12:
-    # Need to include the full path when loading
     data_12[file] = np.load(os.path.join('./12_step', file))
 print("Loaded files from 12_step:", list(data_12.keys()))
 
 
-# Universal style settings
-
-# Global settings that will apply to all figures
 plt.rcParams.update({
     'font.size': 14,
     'axes.labelsize': 16,
@@ -52,15 +42,11 @@ plt.rcParams.update({
     'axes.grid': False,
     'legend.frameon': False,
     'lines.markersize': 6,
-    # Add any other parameters you want to set globally
 })
 
 
-
-# Create figure with two subplots side by side
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
-# Get data
 time_1 = data_1['time_series.npy']
 mid_quantum_1 = data_1['mid_boundary.npy']
 mid_classical_1 = data_1['mid_boundary_c.npy']
@@ -84,9 +70,8 @@ rho_a_12 = data_12["rho_a.npy"]
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
 
-N = 10  # Sample every Nth point for markers
+N = 10 
 
-# Mid boundary plots
 ax1.plot(time_1, mid_classical_1[:, 0], 'r-', label='Classical')
 ax1.plot(time_1[::N], mid_classical_1[::N, 0], 'ro')
 ax1.plot(time_1, mid_classical_1[:, 1], 'r-')
@@ -187,7 +172,6 @@ temp_sol_c = data_1['temp_sol_c.npy']
 temp_liq_a = data_1['temp_liq_a.npy']
 temp_sol_a = data_1['temp_sol_a.npy']
 
-# Plot with same colors but different line styles
 ax5.plot(time_series, temp_liq, color=quantum_color, linestyle='-', label='QLBM')
 ax5.plot(time_series, temp_sol, color=quantum_color, linestyle='--')
 
@@ -218,7 +202,6 @@ temp_sol_c = data_12['temp_sol_c.npy']
 temp_liq_a = data_12['temp_liq_a.npy']
 temp_sol_a = data_12['temp_sol_a.npy']
 
-# Plot with same colors but different line styles
 ax6.plot(time_series, temp_liq, color=quantum_color, linestyle='-', label='QLBM')
 ax6.plot(time_series, temp_sol, color=quantum_color, linestyle='--')
 
@@ -247,7 +230,7 @@ rho_q_12 = data_12['rho_q.npy']
 rho_c_12 = data_12['rho_c.npy']
 
 # Calculate RMS error at each time step
-rms_error_1 = np.sqrt(np.mean((rho_q_1 - rho_c_1)**2, axis=1))  # axis=1 for row-wise RMS
+rms_error_1 = np.sqrt(np.mean((rho_q_1 - rho_c_1)**2, axis=1))
 rms_error_12 = np.sqrt(np.mean((rho_q_12 - rho_c_12)**2, axis=1))
 
 # Create the plot
